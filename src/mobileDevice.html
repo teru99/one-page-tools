@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>モバイルデバイスの確認</title>
+  <script language="javascript" type="text/javascript">
+    'use strict'
+
+    function init() {
+      if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
+        document.getElementById('view_data').innerHTML = 'スマホ or タブレットです。';
+      } else {
+        document.getElementById('view_data').innerHTML = 'スマホ or タブレット以外のデバイスです。';
+      }
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 5vw;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body onload="init()">
+  <h1>モバイルデバイスの確認</h1>
+  <br>
+  <div id="view_data"></div>
+</body>
+
+</html>

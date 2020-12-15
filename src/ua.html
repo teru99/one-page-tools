@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>UA表示</title>
+  <script language="javascript" type="text/javascript">
+    'use strict'
+
+    function init() {
+      document.getElementById('view_data').innerHTML = navigator.userAgent;
+    }
+
+    function copy() {
+      //範囲を指定
+      let range = document.createRange();
+      let viewData = document.querySelector('#view_data');
+      range.selectNodeContents(viewData);
+      //指定した範囲を選択状態にする
+      let selection = document.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      // 選択しているテキストをクリップボードにコピーする
+      document.execCommand('Copy');
+      selection.removeAllRanges();
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 5vw;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body onload="init()">
+  <h1>UA表示</h1>
+  <br>
+  <div id="view_data"></div>
+  <br>
+  <button onclick="copy()">Copy</button>
+</body>
+
+</html>

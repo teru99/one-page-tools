@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>簡易ヒートマップ</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+  <script src="https://Leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+  <script language="javascript" type="text/javascript">
+    'use strict'
+    var map;
+    var clat = 35.681247; // 東京駅
+    var clng = 139.767169;
+    var clatlng = '';
+    var radius = 25;
+    //ポップアップする文字
+    var cname = '指定地点';
+    var mk = [];
+    var data = [];
+    var index = 0;
+    var entrycenter;
+    var entrysheet;
+    var mapcontainer;
+    var entrytable;
+
+    function init() {
+      //地図を表示するdiv要素のidを設定
+      //ズームコントロールを非表示で地図を作成
+      map = L.map('mapcontainer', {
+        zoomControl: false
+      });
+      //地図の中心とズームレベルを指定
+      map.setView([clat, clng], 16);
+      //表示するタイルレイヤのURLとAttributionコントロールの記述を設定して、地図に追加する
+      //地理院地図の淡色地図タイル
+      L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png', {
+        attribution: '<a href="http://portal.cyberjapan.jp/help/termsofuse.html" target="_blank">地理院タイル</a>'
+      }).addTo(map);
+      //スケールコントロールを最大幅200px、右下、m単位で地図に追加
+      L.control.scale({
+        maxWidth: 200,
+        position: 'bottomright',
+        imperial: false
+      }).addTo(map);
+      //ズームコントロールを左下で地図に追加
+      L.control.zoom({
+        position: 'bottomleft'
+      }).addTo(map);
+      entrycenter = document.getElementById('entrycenter');
+      entrysheet = document.getElementById('entrysheet');
+      mapcontainer = document.getElementById('mapcontainer');
+      entrycenter.style.display = 'block';
+      entrysheet.style.display = 'none';
+      mapcontainer.style.display = 'none';
+      entrytable = document.getElementById('entrytable');
+    }
+
+    function mapEntry() {
+      clat = document.getElementById('lat_data').value;
+      clng = document.getElementById('lng_data').value;
+      if (clat == '' || clng == '') {
+        clatlng = document.getElementById('latlng_data').value;
+        let i = clatlng.indexOf(',');
+        clat = parseFloat(clatlng.substr(0, i));
+        clng = parseFloat(clatlng.substr(i + 1));
+      }
+      radius = document.getElementById('radius_data').value;
+      //地図の中心とズームレベルを指定
+      map.setView([clat, clng], 16);
+      //現在の位置にマーカーを地図に追加
+      //マーカーにbindTooltipでツールチップも追加
+      setData(index++, clat, clng, 0.0).bindTooltip(cname).addTo(map);
+      entrycenter.style.display = 'none';
+      entrysheet.style.display = 'none';
+      mapcontainer.style.display = 'block';
+      //地図のclickイベントでonMapClick関数を呼び出し
+      map.on('click', onMapClick);
+    }
+
+    function setData(i, lat, lng, v) {
+      data[i] = [lat, lng, v];
+      //マーカーにポップアップを紐付けする。
+      mk[i] = L.marker([lat, lng]).bindPopup(getPopup(i)).addTo(map);
+      return mk[i];
+    }
+
+    function getPopup(i) {
+      //ポップアップする文字(HTML可)
+      let contents = '位置情報<br><span id="span">' + data[i][0] + ',' + data[i][1] + '</span>' +
+        '<form action="#">値：<input type="text" size="5" id="val" value="' + data[i][2] + '">' +
+        '<input type="button" onclick="valEntry(' + i + ')" value="値を登録">' +
+        '<input type="reset" value="値のクリア"><br>' +
+        '<input type="button" onclick="heatmap()" value="ヒートマップを表示">' +
+        '<input type="button" onclick="keyEntry()" value="テキストで指定する"></form>';
+      //ポップアップオブジェクトを作成
+      return L.popup().setContent(contents);
+    }
+
+    function valEntry(i) {
+      console.log('i:', i);
+      console.log('index:', index);
+      data[i][2] = parseFloat(document.getElementById('val').value);
+      console.log('data[i]:', data[i]);
+    }
+
+    function entryVal() {
+      console.log('edit');
+    }
+
+    function keyEntry() {
+      entrytable.innerHTML = '<tr><th>緯度</th><th>経度</th><th>値</th><th>操作</th></tr>';
+      for (let dt of data) {
+        entrytable.innerHTML += '<tr><td>' + dt[0] + '</td><td>' + dt[1] + '</td><td>' + dt[2] + '</td><td><input type="button" onclick="entryVal()" value="編集"></td></tr>';
+      }
+      entrycenter.style.display = 'none';
+      entrysheet.style.display = 'block';
+      mapcontainer.style.display = 'none';
+    }
+
+    function onMapClick(e) {
+      //地図のclickイベントで呼び出される
+      //クリック地点の座標にマーカーを追加
+      setData(index++, e.latlng['lat'], e.latlng['lng'], 0.0);
+    }
+
+    function heatmap() {
+      console.log('data:', data);
+      console.log('radius:', radius);
+      for (let m of mk) {
+        map.removeLayer(m);
+      }
+      var opt = {};
+      opt['radius'] = parseInt(radius);
+      console.log('opt:', opt);
+      var heat = L.heatLayer(data, opt).addTo(map);
+      //var heat = L.heatLayer(data, {
+      //radius: 100
+      //}).addTo(map);
+      entrycenter.style.display = 'none';
+      entrysheet.style.display = 'none';
+      mapcontainer.style.display = 'block';
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 5vw;
+      margin: 0;
+    }
+
+    .leaflet-tile-container {
+      /* 地図の色味変更 CSS3 filter */
+      x-filter: sepia(100%) brightness(95%);
+      /* セピア */
+      x-filter: grayscale(100%) brightness(110%);
+      /* 明るめグレースケール */
+      filter: hue-rotate(-10deg) saturate(70%) brightness(104%);
+      /* いい感じの色？ */
+    }
+
+    .leaflet-marker-pane>a {
+      word-break: break-all;
+    }
+
+    a {
+      color: #444 !important;
+    }
+  </style>
+</head>
+
+<body onload="init()">
+  <div id="entrycenter" style="position:absolute;top:0;left:0;right:0;bottom:0;">
+    <h1>簡易ヒートマップ</h1>
+    <br>
+    <h2>中心座標の設定</h2>
+    <form action="#">
+      緯度：
+      <input type="text" size=50 id="lat_data" value="">
+      <br>経度：
+      <input type="text" size=50 id="lng_data" value="">
+      <br>または
+      <br>緯度,経度：
+      <input type="text" size=50 id="latlng_data" value="">　lat,lng or [lat,lng]
+      <br>
+      <br>円の大きさ：
+      <input type="text" size=20 id="radius_data" value=25>
+      <br>
+      <br>
+      <input type="reset" value="クリア">
+      <br>
+      <br>
+      <input type="button" onclick="mapEntry()" value="マップで指定する">
+      <input type="button" onclick="keyEntry()" value="テキストで指定する">
+    </form>
+  </div>
+  <div id="entrysheet" style="position:absolute;top:0;left:0;right:0;bottom:0;">
+    <h1>簡易ヒートマップ</h1>
+    <br>
+    <h2>データエントリー</h2>
+    <form action="#">
+      <table border="1">
+        <tbody id="entrytable">
+        </tbody>
+      </table>
+      <input type="button" onclick="mapEntry()" value="マップで指定する">
+      <input type="button" onclick="heatmap()" value="ヒートマップを表示">
+    </form>
+  </div>
+  <!-- style属性に次のように設定するとブラウザの画面全体に表示される -->
+  <div id="mapcontainer" style="position:absolute;top:0;left:0;right:0;bottom:0;"></div>
+</body>
+
+</html>

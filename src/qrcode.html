@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>QRコード</title>
+  <script language="javascript" type="text/javascript">
+    'use strict'
+    var data = '';
+    var url = '';
+    var bloburl = '';
+
+    function init() {
+      document.querySelector('#paste').addEventListener('click', paste);
+      document.querySelector('#conv').addEventListener('click', conv);
+      document.querySelector('#clear').addEventListener('click', clear_field);
+    }
+
+    function paste() {
+      var pasteText = document.querySelector('#input_field');
+      pasteText.focus();
+      document.execCommand('paste');
+    }
+
+    function conv() {
+      data = document.getElementById('input_field').value;
+      if (data == '') {
+        return;
+      }
+
+      document.getElementById('qrcode').innerHTML = '<img id="qrcode2" src="img/indexQRcode.png">';
+      url = 'https://chart.apis.google.com/chart?chs=300x300&cht=qr&chl=' + encodeURIComponent(data);
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error: not ok');
+          }
+          return response.blob();
+        })
+        .then(blob => {
+          bloburl = URL.createObjectURL(blob);
+          document.getElementById('qrcode2').src = bloburl;
+          document.getElementById('view_area').innerHTML = data;
+          document.getElementById('download').innerHTML = '<button id="download2">ダウンロード</button>';
+          document.querySelector('#download2').addEventListener('click', download);
+        })
+        .catch(error => {
+          console.error('Error:fetch:', error);
+        });
+    }
+
+    function clear_field() {
+      document.getElementById('input_field').value = '';
+      document.getElementById('qrcode').innerHTML = '';
+      document.getElementById('view_area').innerHTML = '';
+      document.getElementById('download').innerHTML = '';
+      URL.revokeObjectURL(bloburl);
+      data = '';
+      url = '';
+      bloburl = '';
+    }
+
+    function download() {
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.download = 'qrcode.png';
+      a.href = bloburl;
+      a.click();
+      a.remove();
+      // URL.revokeObjectURL(bloburl);
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 5vw;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body onload="init()">
+  <h1>QRコード</h1>
+  <br>
+  <button id="paste">ペースト</button>
+  <input type="text" size="50" id="input_field" value="">
+  <button id="conv">変換</button>
+  <button id="clear">クリア</button>
+  <div id="qrcode"></div>
+  <div id="view_area"></div>
+  <br>
+  <div id="download"></div>
+</body>
+
+</html>

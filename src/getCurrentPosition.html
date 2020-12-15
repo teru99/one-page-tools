@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Geolocation APIの確認</title>
+  <script language="javascript" type="text/javascript">
+    'use strict'
+
+    function init() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(gpos) {
+          document.getElementById('result').innerHTML = 'Geolocation APIにアクセス成功';
+          document.getElementById('latitude').innerHTML = gpos.coords.latitude;
+          document.getElementById('longitude').innerHTML = gpos.coords.longitude;
+          document.getElementById('altitude').innerHTML = gpos.coords.altitude;
+          document.getElementById('accuracy').innerHTML = gpos.coords.accuracy;
+          document.getElementById('altitudeAccuracy').innerHTML = gpos.coords.altitudeAccuracy;
+          document.getElementById('heading').innerHTML = gpos.coords.heading;
+          document.getElementById('speed').innerHTML = gpos.coords.speed;
+        }, function(e) {
+          document.getElementById('result').innerHTML = 'Geolocation APIにアクセス失敗';
+          document.getElementById('errno').innerHTML = e.code;
+        })
+      } else {
+        document.getElementById('result').innerHTML = 'このデバイスは、Geolocation APIを利用できません。';
+      }
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 5vw;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body onload="init()">
+  <h1>Geolocation APIの確認</h1>
+  <br>結果:
+  <div id="result"></div>
+  <br>緯度:
+  <div id="latitude"></div>
+  <br>経度:
+  <div id="longitude"></div>
+  <br>高度:
+  <div id="altitude"></div>
+  <br>緯度、経度の精度:
+  <div id="accuracy"></div>
+  <br>高度の精度:
+  <div id="altitudeAccuracy"></div>
+  <br>方角:
+  <div id="heading"></div>
+  <br>速度(メートル/秒数):
+  <div id="speed"></div>
+  <br>エラー番号:
+  <div id="errno"></div>
+</body>
+
+</html>
