@@ -10,6 +10,7 @@
 
     function init() {
       document.getElementById('view_data').innerHTML = navigator.userAgent;
+      document.querySelector('#copy').addEventListener('click', copy);
     }
 
     function copy() {
@@ -45,7 +46,7 @@
   <br>
   <div id="view_data"></div>
   <br>
-  <button onclick="copy()">Copy</button>
+  <button id="copy">コピー</button>
 </body>
 
 </html>
