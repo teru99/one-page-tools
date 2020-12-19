@@ -5,6 +5,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
   <title>Geolocation APIの確認</title>
+  <link href="css/reset.css" rel="stylesheet" type="text/css">
+  <link href="css/opt.css" rel="stylesheet" type="text/css">
   <script language="javascript" type="text/javascript">
     'use strict'
 
@@ -28,40 +30,48 @@
       }
     }
   </script>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 5vw;
-      margin: 0;
-    }
-  </style>
 </head>
 
 <body onload="init()">
   <h1>Geolocation APIの確認</h1>
-  <br>結果:
-  <div id="result"></div>
-  <br>緯度:
-  <div id="latitude"></div>
-  <br>経度:
-  <div id="longitude"></div>
-  <br>高度:
-  <div id="altitude"></div>
-  <br>緯度、経度の精度:
-  <div id="accuracy"></div>
-  <br>高度の精度:
-  <div id="altitudeAccuracy"></div>
-  <br>方角:
-  <div id="heading"></div>
-  <br>速度(メートル/秒数):
-  <div id="speed"></div>
-  <br>エラー番号:
-  <div id="errno"></div>
+  <table>
+    <tr>
+      <td>結果</td>
+      <td><div id="result"></div></td>
+    </tr>
+    <tr>
+      <td>緯度</td>
+      <td><div id="latitude"></div></td>
+    </tr>
+    <tr>
+      <td>経度</td>
+      <td><div id="longitude"></div></td>
+    </tr>
+    <tr>
+      <td>高度</td>
+      <td><div id="altitude"></div></td>
+    </tr>
+    <tr>
+      <td>緯度、経度の精度</td>
+      <td><div id="accuracy"></div></td>
+    </tr>
+    <tr>
+      <td>高度の精度</td>
+      <td><div id="altitudeAccuracy"></div></td>
+    </tr>
+    <tr>
+      <td>方角</td>
+      <td><div id="heading"></div></td>
+    </tr>
+    <tr>
+      <td>速度(メートル/秒数)</td>
+      <td><div id="speed"></div></td>
+    </tr>
+    <tr>
+      <td>エラー番号</td>
+      <td><div id="errno"></div></td>
+    </tr>
+  </table>
 </body>
 
 </html>

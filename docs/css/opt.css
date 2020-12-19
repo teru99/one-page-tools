@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+h1 {
+  font-size: 5vw;
+  font-weight: bold;
+  margin: 0;
+}
+
+h2 {
+  text-align: center;
+}
+
+table, td, th {border: 1px black solid;}
+
+table {
+  width: 70%;
+  margin: 0 auto;
+  border: solid 1px;
+}
