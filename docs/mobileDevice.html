@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
@@ -10,20 +9,22 @@
   <script language="javascript" type="text/javascript">
     'use strict'
 
-    function init() {
+    function load() {
       if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
         document.getElementById('view_data').innerHTML = 'スマホ or タブレットです。';
       } else {
         document.getElementById('view_data').innerHTML = 'スマホ or タブレット以外のデバイスです。';
       }
     }
+
+    window.onload = load;
   </script>
 </head>
-
-<body onload="init()">
+<body>
+<section id="main">
   <h1>モバイルデバイスの確認</h1>
   <br>
   <div id="view_data"></div>
+</section>
 </body>
-
 </html>

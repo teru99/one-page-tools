@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width" />
@@ -19,7 +18,7 @@
     var cname = '指定地点';
     var mk = '';
 
-    function init() {
+    function load() {
       //地図を表示するdiv要素のidを設定
       //ズームコントロールを非表示で地図を作成
       map = L.map('mapcontainer', {
@@ -47,6 +46,8 @@
       entrysheet.style.display = 'block';
       mapcontainer.style.display = 'none';
     }
+
+    window.onload = load;
 
     function view() {
       clat = document.getElementById('lat_data').value;
@@ -119,8 +120,8 @@
     }
   </style>
 </head>
-
-<body onload="init()">
+<body>
+<section id="main">
   <div id="entrysheet" style="position:absolute;top:0;left:0;right:0;bottom:0;">
     <h1>緯度、経度の指定</h1>
     <br>
@@ -140,6 +141,6 @@
   </div>
   <!-- style属性に次のように設定するとブラウザの画面全体に表示される -->
   <div id="mapcontainer" style="position:absolute;top:0;left:0;right:0;bottom:0;"></div>
+</section>
 </body>
-
 </html>

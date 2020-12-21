@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width" />
@@ -18,7 +17,7 @@
     var cname = 'いまここ!!';
     var mk = '';
 
-    function init() {
+    function load() {
       if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
         //スマホ　or タブレット
         if (navigator.geolocation) {
@@ -60,6 +59,8 @@
       //地図のclickイベントでonMapClick関数を呼び出し
       map.on('click', onMapClick);
     }
+
+    window.onload = load;
 
     function copy() {
       //範囲を指定
@@ -112,10 +113,10 @@
     }
   </style>
 </head>
-
-<body onload="init()">
+<body>
+<section id="main">
   <!-- style属性に次のように設定するとブラウザの画面全体に表示される -->
   <div id="mapcontainer" style="position:absolute;top:0;left:0;right:0;bottom:0;"></div>
+</section>
 </body>
-
 </html>

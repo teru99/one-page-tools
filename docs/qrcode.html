@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
@@ -13,11 +12,13 @@
     var url = '';
     var bloburl = '';
 
-    function init() {
+    function load() {
       document.querySelector('#paste').addEventListener('click', paste);
       document.querySelector('#conv').addEventListener('click', conv);
       document.querySelector('#clear').addEventListener('click', clear_field);
     }
+
+    window.onload = load;
 
     function paste() {
       var pasteText = document.querySelector('#input_field');
@@ -74,8 +75,8 @@
     }
   </script>
 </head>
-
-<body onload="init()">
+<body>
+<section id="main">
   <h1>QRコード</h1>
   <br>
   <button id="paste">ペースト</button>
@@ -86,6 +87,6 @@
   <div id="view_area"></div>
   <br>
   <div id="download"></div>
+</section>
 </body>
-
 </html>

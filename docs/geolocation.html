@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
@@ -10,20 +9,22 @@
   <script language="javascript" type="text/javascript">
     'use strict'
 
-    function init() {
+    function load() {
       if (navigator.geolocation) {
         document.getElementById('view_data').innerHTML = 'このデバイスは、Geolocation APIを利用できます。';
       } else {
         document.getElementById('view_data').innerHTML = 'このデバイスは、Geolocation APIを利用できません。';
       }
     }
+
+    window.onload = load;
   </script>
 </head>
-
-<body onload="init()">
+<body>
+<section id="main">
   <h1>Geolocation APIの確認</h1>
   <br>
   <div id="view_data"></div>
+</section>
 </body>
-
 </html>
