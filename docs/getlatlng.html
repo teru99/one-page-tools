@@ -13,81 +13,81 @@
     var map;
     var clat = 35.681247; // 東京駅
     var clng = 139.767169;
-    // ポップアップする文字
-    var cname = 'いまここ!!';
+    var cname = 'いまここ!!'; // ポップアップする文字
     var mk = '';
 
-    function load() {
-      if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
-        //スマホ　or タブレット
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(gpos) {
-            clat = Math.round(gpos.coords.latitude * base) / base;
-            clng = Math.round(gpos.coords.longitude * base) / base;
-          }, function(e) {
-            alert('現在位置に取得に失敗！', e.code);
-          })
-        } else {
-          alert('このデバイスは、Geolocation APIを利用できません。');
-        }
-      }
-      //地図を表示するdiv要素のidを設定
-      //ズームコントロールを非表示で地図を作成
+    function setupMap() {
+      // 地図を表示するdiv要素のidを設定 & ズームコントロールを非表示で地図を作成
       map = L.map('mapcontainer', {
         zoomControl: false
       });
-      //地図の中心とズームレベルを指定
+      // 地図の中心とズームレベルを指定
       map.setView([clat, clng], 16);
-      //表示するタイルレイヤのURLとAttributionコントロールの記述を設定して、地図に追加する
-      //地理院地図の淡色地図タイル
+      // 表示するタイルレイヤのURLとAttributionコントロールの記述を設定して、地図に追加する
+      // 地理院地図の淡色地図タイル
       L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png', {
         attribution: '<a href="http://portal.cyberjapan.jp/help/termsofuse.html" target="_blank">地理院タイル</a>'
       }).addTo(map);
-      //スケールコントロールを最大幅200px、右下、m単位で地図に追加
+      // スケールコントロールを最大幅200px、右下、m単位で地図に追加
       L.control.scale({
         maxWidth: 200,
         position: 'bottomright',
         imperial: false
       }).addTo(map);
-      //ズームコントロールを左下で地図に追加
+      // ズームコントロールを左下で地図に追加
       L.control.zoom({
         position: 'bottomleft'
       }).addTo(map);
-      //現在の位置にマーカーを地図に追加
-      //マーカーにポップアップを紐付けする。同時にbindTooltipでツールチップも追加
+      // 現在の位置にマーカーを地図に追加 & マーカーにポップアップを紐付けする。同時にbindTooltipでツールチップも追加
       mk = L.marker([clat, clng]).bindPopup(getPopup(clat, clng)).bindTooltip(cname).addTo(map);
-      //地図のclickイベントでonMapClick関数を呼び出し
+      // 地図のclickイベントでonMapClick関数を呼び出し
       map.on('click', onMapClick);
+    }
+
+    function load() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(gpos) {
+          clat = gpos.coords.latitude;
+          clng = gpos.coords.longitude;
+          setupMap();
+        }, function(e) {
+          alert('現在位置に取得に失敗！', e.code);
+          setupMap();
+        })
+      } else {
+        alert('このデバイスは、Geolocation APIを利用できません。');
+        setupMap();
+      }
     }
 
     window.onload = load;
 
     function copy() {
-      //範囲を指定
+      // 範囲を指定
       let range = document.createRange();
       let span = document.getElementById('span');
       range.selectNodeContents(span);
-      //指定した範囲を選択状態にする
+      // 指定した範囲を選択状態にする
       let selection = document.getSelection();
       selection.removeAllRanges();
       selection.addRange(range);
       // 選択しているテキストをクリップボードにコピーする
-      document.execCommand('Copy');
+      document.execCommand('copy');
     }
 
     function getPopup(lat, lng) {
-      //ポップアップする文字（HTML可、）
+      // ポップアップする文字（HTML可、）
       let contents = '位置情報<br><span id="span">' + lat + ',' + lng + '</span><br>' +
         '<button onclick="copy()">Copy</button>';
-      //ポップアップオブジェクトを作成
+      // ポップアップオブジェクトを作成
       return L.popup().setContent(contents);
     }
 
     function onMapClick(e) {
-      //地図のclickイベント呼び出される
-      //クリック地点の座標にマーカーを追加
+      // 地図のclickイベント呼び出される
+      // クリック地点の座標にマーカーを追加
       if (mk != '') {
-        //前のマーカーを削除
+        // 前のマーカーを削除
         map.removeLayer(mk);
       }
       mk = L.marker(e.latlng).bindPopup(getPopup(e.latlng['lat'], e.latlng['lng'])).addTo(map);
@@ -97,11 +97,8 @@
     .leaflet-tile-container {
       /* 地図の色味変更 CSS3 filter */
       x-filter: sepia(100%) brightness(95%);
-      /* セピア */
       x-filter: grayscale(100%) brightness(110%);
-      /* 明るめグレースケール */
       filter: hue-rotate(-10deg) saturate(70%) brightness(104%);
-      /* いい感じの色？ */
     }
 
     .leaflet-marker-pane>a {
@@ -115,7 +112,7 @@
 </head>
 <body>
 <section id="main">
-  <!-- style属性に次のように設定するとブラウザの画面全体に表示される -->
+  <!-- ブラウザ画面全体に表示 -->
   <div id="mapcontainer" style="position:absolute;top:0;left:0;right:0;bottom:0;"></div>
 </section>
 </body>
