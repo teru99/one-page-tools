@@ -21,3 +21,10 @@ table {
   margin: 0 auto;
   border: solid 1px;
 }
+
+.material-icons.md-dark { color: rgba(0, 0, 0, 1); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+.material-icons.md-64 { font-size: 64px; }
+.material-icons.red { color: rgba(255, 0, 0, 1); }
+.material-icons.blue { color: rgba(0, 0, 255, 1); }
+.material-icons.black { color: rgba(0, 0, 0, 1); }

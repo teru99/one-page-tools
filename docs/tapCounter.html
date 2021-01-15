@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Tap Counter</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/reset.css" rel="stylesheet" type="text/css">
+  <link href="css/opt.css" rel="stylesheet" type="text/css">
+  <script src="lib/buttonOperation.js"></script>
+  <script language="javascript" type="text/javascript">
+    var l = 0;
+    var tcobj = [];
+
+    window.onload = start;
+
+    function start() {
+      active('add', add, 'addi');
+      active('remove', remove, 'removei');
+      active('save', save, 'savei');
+      active('clear', clear, 'cleari');
+      // active('setting', setting, 'settingi');
+      add();
+      add();
+      add();
+    }
+
+    function draw() {
+      var counter_row = '';
+      var button_row = '';
+
+      tcobj.forEach((column, index) => {
+        counter_row += '<td id="c' + index + '">' + column.count + '</td>';
+        button_row += '<td><button type="button" id="' + column.id + '">' + column.face + '</button></td>';
+      });
+
+      document.getElementById('counter').innerHTML = counter_row;
+      document.getElementById('button').innerHTML = button_row;
+
+      tcobj.forEach((column, index) => {
+        document.getElementById('b' + index).addEventListener('click', countup);
+      });
+    }
+
+    function countup() {
+      tcobj.forEach((column) => {
+        if (column.id == this.id) {
+          column.count++;
+        }
+      });
+
+      draw();
+    }
+
+    function add() {
+      tcobj.push({ "id" : "b" + l++ , "face" : l , "count" : 0 });
+      draw();
+    }
+
+    function remove() {
+      l--;
+      tcobj.pop();
+      draw();
+    }
+
+    function save() {
+      const blob = new Blob([JSON.stringify(tcobj, null, 2)], {type : 'application/json'});
+      var bloburl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.download = 'counter.json';
+      a.href = bloburl;
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(bloburl);
+    }
+
+    function clear() {
+      tcobj.forEach((column) => {
+        column.count = 0;
+      });
+
+      draw();
+    }
+
+    function setting() {
+
+    }
+  </script>
+</head>
+<body>
+<section id="main">
+  <h1>Tap Counter</h1>
+  <br>
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <button type="button" id="add"><i id="addi">add</i></button>
+          <button type="button" id="remove"><i id="removei">remove</i></button>
+          <button type="button" id="save"><i id="savei">save_alt</i></button>
+          <button type="button" id="clear"><i id="cleari">clear</i></button>
+          <!-- <button type="button" id="setting"><i id="settingi">settings</i></button> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+  <table>
+    <tbody>
+      <tr id="counter"></tr>
+      <tr id="button"></tr>
+    </tbody>
+  </table>
+</section>
+</body>
+</html>
