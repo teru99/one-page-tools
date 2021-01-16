@@ -4,14 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
   <title>UA表示</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/reset.css" rel="stylesheet" type="text/css">
   <link href="css/opt.css" rel="stylesheet" type="text/css">
+  <script src="lib/buttonOperation.js"></script>
   <script language="javascript" type="text/javascript">
     'use strict'
 
     function load() {
       document.getElementById('view_data').innerHTML = navigator.userAgent;
-      document.getElementById('copy').addEventListener('click', copy);
+      active('copy', copy, 'copyi');
     }
 
     window.onload = load;
@@ -34,7 +36,7 @@
   <br>
   <div id="view_data"></div>
   <br>
-  <button id="copy">コピー</button>
+  <button type="button" id="copy"><i id="copyi">content_copy</i></button>
 </section>
 </body>
 </html>

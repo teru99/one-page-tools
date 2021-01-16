@@ -4,8 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
   <title>QRコード</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/reset.css" rel="stylesheet" type="text/css">
   <link href="css/opt.css" rel="stylesheet" type="text/css">
+  <script src="lib/buttonOperation.js"></script>
   <script language="javascript" type="text/javascript">
     'use strict'
     var data = '';
@@ -13,9 +15,9 @@
     var bloburl = '';
 
     function load() {
-      document.getElementById('paste').addEventListener('click', paste);
-      document.getElementById('conv').addEventListener('click', conv);
-      document.getElementById('clear').addEventListener('click', clear_field);
+      active('paste', paste, 'pastei');
+      active('conv', conv, 'convi');
+      active('clear', clear_field, 'cleari');
     }
 
     window.onload = load;
@@ -45,8 +47,8 @@
           bloburl = URL.createObjectURL(blob);
           document.getElementById('qrcode2').src = bloburl;
           document.getElementById('view_area').innerHTML = data;
-          document.getElementById('download').innerHTML = '<button id="download2">ダウンロード</button>';
-          document.getElementById('download2').addEventListener('click', download);
+          document.getElementById('download').innerHTML = '<button id="download2"><i id="download2i">save_alt</i></button>';
+          active('download2', download, 'download2i');
         })
         .catch(error => {
           console.error('Error:fetch:', error);
@@ -79,10 +81,10 @@
 <section id="main">
   <h1>QRコード</h1>
   <br>
-  <button id="paste">ペースト</button>
+  <button type="button" id="paste"><i id="pastei">content_paste</i></button>
   <input type="text" size="50" id="input_field" value="">
-  <button id="conv">変換</button>
-  <button id="clear">クリア</button>
+  <button type="button" id="conv"><i id="convi">qr_code_2</i></button>
+  <button type="button" id="clear"><i id="cleari">clear</i></button>
   <div id="qrcode"></div>
   <div id="view_area"></div>
   <br>
