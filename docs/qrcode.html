@@ -13,15 +13,15 @@
     var bloburl = '';
 
     function load() {
-      document.querySelector('#paste').addEventListener('click', paste);
-      document.querySelector('#conv').addEventListener('click', conv);
-      document.querySelector('#clear').addEventListener('click', clear_field);
+      document.getElementById('paste').addEventListener('click', paste);
+      document.getElementById('conv').addEventListener('click', conv);
+      document.getElementById('clear').addEventListener('click', clear_field);
     }
 
     window.onload = load;
 
     function paste() {
-      var pasteText = document.querySelector('#input_field');
+      var pasteText = document.getElementById('input_field');
       pasteText.focus();
       document.execCommand('paste');
     }
@@ -46,7 +46,7 @@
           document.getElementById('qrcode2').src = bloburl;
           document.getElementById('view_area').innerHTML = data;
           document.getElementById('download').innerHTML = '<button id="download2">ダウンロード</button>';
-          document.querySelector('#download2').addEventListener('click', download);
+          document.getElementById('download2').addEventListener('click', download);
         })
         .catch(error => {
           console.error('Error:fetch:', error);

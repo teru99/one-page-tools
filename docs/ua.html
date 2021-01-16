@@ -11,14 +11,14 @@
 
     function load() {
       document.getElementById('view_data').innerHTML = navigator.userAgent;
-      document.querySelector('#copy').addEventListener('click', copy);
+      document.getElementById('copy').addEventListener('click', copy);
     }
 
     window.onload = load;
 
     function copy() {
       let range = document.createRange();
-      let viewData = document.querySelector('#view_data');
+      let viewData = document.getElementById('view_data');
       range.selectNodeContents(viewData);
       let selection = document.getSelection();
       selection.removeAllRanges();
