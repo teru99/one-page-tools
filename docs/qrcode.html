@@ -34,7 +34,7 @@
         return;
       }
 
-      document.getElementById('qrcode').innerHTML = '<img id="qrcode2" src="img/indexQRcode.png">';
+      document.getElementById('qrcode').innerHTML = '<img id="qrcode2" src="images/indexQRcode.png">';
       url = 'https://chart.apis.google.com/chart?chs=300x300&cht=qr&chl=' + encodeURIComponent(data);
       fetch(url)
         .then(response => {
