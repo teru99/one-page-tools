@@ -25,8 +25,8 @@
       map.setView([clat, clng], 16);
       // 表示するタイルレイヤのURLとAttributionコントロールの記述を設定して、地図に追加する
       // 地理院地図の淡色地図タイル
-      L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png', {
-        attribution: '<a href="http://portal.cyberjapan.jp/help/termsofuse.html" target="_blank">地理院タイル</a>'
+      L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png', {
+        attribution: '<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">地理院タイル</a>'
       }).addTo(map);
       // スケールコントロールを最大幅200px、右下、m単位で地図に追加
       L.control.scale({
