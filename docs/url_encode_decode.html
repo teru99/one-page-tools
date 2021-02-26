@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>URL Encode/Decode</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/reset.css" rel="stylesheet" type="text/css">
+  <link href="css/opt.css" rel="stylesheet" type="text/css">
+  <script src="lib/buttonOperation.js"></script>
+  <script language="javascript" type="text/javascript">
+    'use strict'
+    var data = '';
+
+    function load() {
+      active('paste', paste, 'pastei');
+      active('conv', conv, 'convi');
+      active('clear', clear_field, 'cleari');
+    }
+
+    window.onload = load;
+
+    function paste() {
+      var pasteText = document.getElementById('input_field');
+      pasteText.focus();
+      document.execCommand('paste');
+    }
+
+    function conv() {
+      data = document.getElementById('input_field').value;
+      if (data == '') {
+        return;
+      }
+      var encodeUri = encodeURI(data);
+      var decodeUri = decodeURI(data);
+
+      document.getElementById('view_area_encode').innerHTML = 'encode: <input type="text" size="50" id="output_field_encode" value=""><button id="copyencode"><i id="copyencodei">content_copy</i></button>';
+      document.getElementById('view_area_decode').innerHTML = 'decode: <input type="text" size="50" id="output_field_decode" value=""><button id="copydecode"><i id="copydecodei">content_copy</i></button>';
+      document.getElementById('output_field_encode').value = encodeUri;
+      document.getElementById('output_field_decode').value = decodeUri;
+      active('copyencode', copyencode, 'copyencodei');
+      active('copydecode', copydecode, 'copydecodei');
+    }
+
+    function clear_field() {
+      document.getElementById('input_field').value = '';
+      document.getElementById('view_area_encode').innerHTML = '';
+      document.getElementById('view_area_decode').innerHTML = '';
+      data = '';
+    }
+
+    function copyencode() {
+      var copyTarget = document.getElementById('output_field_encode');
+      copyTarget.select();
+      document.execCommand('copy');
+    }
+
+    function copydecode() {
+      var copyTarget = document.getElementById('output_field_decode');
+      copyTarget.select();
+      document.execCommand('copy');
+    }
+  </script>
+</head>
+<body>
+<section id="main">
+  <h1>URL Encode/Decode</h1>
+  <br>
+  <button type="button" id="paste"><i id="pastei">content_paste</i></button>
+  <input type="text" size="50" id="input_field" value="">
+  <button type="button" id="conv"><i id="convi">change_circle</i></button>
+  <button type="button" id="clear"><i id="cleari">clear</i></button>
+  <br>
+  <br>
+  <div id="view_area_encode"></div>
+  <br>
+  <div id="view_area_decode"></div>
+</section>
+</body>
+</html>
